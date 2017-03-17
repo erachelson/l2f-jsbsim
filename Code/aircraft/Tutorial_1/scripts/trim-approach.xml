@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="http://jsbsim.sf.net/JSBSimScript.xsl"?>
+<runscript xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://jsbsim.sf.net/JSBSimScript.xsd"
+    name="Trim - Approach">
+
+  <description>
+    Trimmed at altitude/airspeed in Approach configuration, 
+    run for 4 second
+
+      Author:
+    Bill Galbraith
+    Holy Cows, Inc.
+    billg@holycows.net
+    November 2010
+  </description>
+
+  <use aircraft="Tutorial_1" initialize="scripts/airborne"/>
+  <run start="0" end="10" dt="0.00833333">
+
+    <!-- 
+      Specify the initial conditions for the test if
+      different than in the initialize script, and
+      trim the aircraft.
+    -->
+    <event name="Trim">
+      <condition> sim-time-sec ge 0.0 </condition>
+        <set name="ic/vc-kts"  value="110.0"/>
+        <set name="ic/h-sl-ft" value="8776.0"/>
+        <set name="fcs/flap-cmd-norm" value="0.5"/>
+        <set name="fcs/flap-pos-deg" value="15.0"/>
+        <set name="simulation/do_simple_trim" value="1"/>
+        <notify> 
+      	<property> fcs/flap-pos-deg</property>
+      </notify>
+    </event>
+
+  </run>
+
+</runscript>

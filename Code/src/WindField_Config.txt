@@ -1,0 +1,23 @@
+# Definition of the domain :
+# MinX and MaxX
+-5000 50000
+# MinY and MaxY
+-5000 5000
+# MinZ and MaxZ
+0 1400
+# Starting and Ending time of simulation
+0 200
+# MinLifeTime and MaxLifeTime of Thermal
+600 840
+# MinRestTime and MaxRestTime of Thermal
+1.2 2
+# Ambient WindX and Ambient WindY
+0 0
+# Convective Mixing layer thickness
+1400
+# The list of Thermals created :
+# CentreX   CentreY   wStar   tBirth   tRest   tLife
+2000 0 4.64 0 4 631.569
+4000 0 1.64 0 4 631.569
+6000 0 3.64 0 4 631.569
+8000 0 3.64 0 4 631.569

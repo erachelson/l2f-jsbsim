@@ -1,0 +1,72 @@
+#include <iostream>
+#include <FGFDMExec.h>
+#include <fstream>
+#include <math>
+
+using namespace std;
+
+/* The Function Controller takes input the observables from the simulation and 
+   outputs the control inputs that will be passed back to the simulation. 
+   @param obs the observable states of the system
+   @param r the reward from the system */ 
+double* controller(double* obs, double r);
+
+string RootDir = "../";
+int main(int argc, char **argv)
+{  
+  
+  ofstream myfile;
+  myfile.open ("Hello.txt");  
+  
+  
+  JSBSim::FGFDMExec *FDMExec = new JSBSim::FGFDMExec();
+  string AircraftName ="sgs126";
+  string ResetName ="airborne";
+  double ts,tend,dt;
+  ts=0.0;
+  tend=100.0;
+  dt=0.083;
+  //FDMExec->SetAtmosphereWindfield("/Users/Sreekanth/Documents/ISAE/Project/JSBSIM/JSBSim/src/WindField_Config.txt");
+  FDMExec->SetSimtime(ts,tend,dt);
+  FDMExec->LoadModel( RootDir + "aircraft",
+                               RootDir + "engine",
+                               RootDir + "systems",
+                               AircraftName);
+  JSBSim::FGInitialCondition *IC = FDMExec->GetIC();
+    if ( ! IC->Load(ResetName)) {
+      delete &FDMExec;
+      cerr << "Initialization unsuccessful" << endl;
+      exit(-1);
+	}
+	
+  FDMExec->DoTrim(0);
+  
+  double obs[3]; 
+  double cmd[] = {0.0,0.0,0.0};
+  double reward, vg,vgdot,udot,vdot,wdot;
+  
+  while (FDMExec->Run()){
+  
+  obs[0] = 0.3048*FDMExec->GetPropertyValue("velocities/h-dot-fps"); 
+  obs[1] = FDMExec->GetPropertyValue("velocities/thetadot-rad_sec") - FDMExec->GetPropertyValue("aero/alphadot-rad_sec");
+  obs[2] = FDMExec->GetPropertyValue("attitude/phi-rad");
+  
+  vg = 0.3048*FDMExec->GetPropertyValue("velocities/vg-fps");
+  udot = FDMExec->GetPropertyValue("accelerations/udot-ft_sec2"); 
+  vdot = FDMExec->GetPropertyValue("accelerations/vdot-ft_sec2");
+  wdot = FDMExec->GetPropertyValue("accelerations/wdot-ft_sec2");
+  vgdot = 0.3048*sqrt(udot*udot+vdot*vdot+wdot*wdot);
+  
+  reward = obs[0]+vg*vgdot/9.80665;
+  
+  
+  cmd=controller(obs,reward);
+  
+  FDMExec->SetElevatorCmd(cmd[0]);
+  FDMExec->SetAileronCmd(cmd[1]);
+  FDMExec->SetRudderCmd(cmd[2]);
+
+  }
+  //cout<<"The simulation has ended"<<endl;
+  myfile.close();
+}

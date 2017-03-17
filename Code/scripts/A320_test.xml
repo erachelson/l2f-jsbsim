@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="http://jsbsim.sf.net/JSBSimScript.xsl"?>
+<runscript xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://jsbsim.sf.net/JSBSimScript.xsd"
+    name="A320_test">
+
+  <use aircraft="A320" initialize="initfile"/> 
+  <run start="0" end="150" dt="0.083">
+    <event name="Trim">
+      <condition> sim-time-sec ge 0.0 </condition>
+	  <set name="ic/vc-kts"  value="230.0"/>
+	  <set name="ic/h-sl-ft" value="6000.0"/>
+      <set name="simulation/do_simple_trim" value="1"/>
+    </event>
+    <event name="aileron">
+      <condition>
+          sim-time-sec ge 20.0
+          sim-time-sec lt 25.0 
+      </condition>
+      <set name="fcs/aileron-cmd-norm" value="0.2"/>
+    </event>
+    <event name="aileron_off">
+      <condition>
+          sim-time-sec gt 25.0 
+      </condition>
+      <set name="fcs/aileron-cmd-norm" value="0.0"/>
+    </event>     
+   <!--<event name="elevator">
+      <condition>
+          sim-time-sec ge 30.0
+          sim-time-sec lt 32.0 
+      </condition>
+      <set name="fcs/elevator-cmd-norm" value="-0.2"/>
+    </event>
+    <event name="elevator_off">
+      <condition>
+          sim-time-sec gt 32.0 
+      </condition>
+      <set name="fcs/elevator-cmd-norm" value="0.0"/>
+    </event> -->
+  </run>
+
+</runscript>

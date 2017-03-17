@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl"
+    href="http://jsbsim.sf.net/JSBSimScript.xsl"?>
+<runscript xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:noNamespaceSchemaLocation=
+   "http://jsbsim.sf.net/JSBSimScript.xsd" name="ball test">
+  <use aircraft="A320" initialize="airborne"/>
+  <run start="0" end="5" dt="0.00833333">
+
+    <!-- 
+	  Specify the initial conditions for the test if
+	  different than in the initialize script, and
+	  trim the aircraft.
+	-->
+    <event name="Trim">
+      <condition> sim-time-sec ge 2.0 </condition>
+	  <set name="ic/vc-kts"  value="190.0"/>
+	  <set name="ic/h-sl-ft" value="4500.0"/>
+      <set name="simulation/do_simple_trim" value="1"/>
+    </event>
+
+  </run>
+
+</runscript>

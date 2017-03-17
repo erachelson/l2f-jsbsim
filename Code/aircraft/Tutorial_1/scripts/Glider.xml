@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="http://jsbsim.sf.net/JSBSimScript.xsl"?>
+<runscript xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://jsbsim.sf.net/JSBSimScript.xsd"
+    name="glider">
+
+  <use aircraft="sgs126" initialize="airborne"/> 
+  <run start="0" end="5" dt="0.00833333">
+    <event name="wind" continuous="true">
+      <condition>
+          sim-time-sec ge 1.0
+          sim-time-sec lt 2.0
+      </condition>
+      <notify>metrics/lh-ft</notify>
+    </event>
+    <event name="2" continuous="true">
+      <condition>
+          sim-time-sec ge 1.5
+          sim-time-sec lt 2.0
+      </condition>
+      <notify>position/h-sl-meters</notify>
+    </event>
+    <!--<event name="nowind" continuous="true">
+      <condition>
+          sim-time-sec ge 2.0
+          sim-time-sec lt 3.0 
+      </condition>
+      <set name="atmosphere/wind-down-fps" value="10.0"/>
+    </event>
+    <event name="nowind2" continuous="true">
+      <condition>
+          sim-time-sec ge 3.0
+      </condition>
+      <set name="atmosphere/wind-down-fps" value="0.0"/>
+    </event>-->
+    <!--<event name="elevator" continuous="true">
+      <description>Provide a time history input for the aileron</description>
+      <condition> sim-time-sec ge 0 </condition>
+      <set name="fcs/elevator-cmd-norm" >
+          <function>
+          <table>
+            <independentVar lookup="row">sim-time-sec</independentVar>
+            <tableData>
+               0.0     0.0
+               2.0     0.5
+               3.0     0.5
+               3.1     0.0
+               4       0.0
+            </tableData>
+          </table>
+        </function>  
+      </set>
+    </event>-->
+  </run>
+
+</runscript>

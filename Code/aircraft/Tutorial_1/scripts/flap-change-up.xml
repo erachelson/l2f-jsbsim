@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="http://jsbsim.sf.net/JSBSimScript.xsl"?>
+<runscript xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="http://jsbsim.sf.net/JSBSimScript.xsd"
+    name="Flap Change - up">
+
+  <description>
+    Flap change dynamics, Retraction from Approach to Cruise
+    run for 15 second
+
+    Author:
+    Bill Galbraith
+    Holy Cows, Inc.
+    billg@holycows.net
+    December 2010
+  </description>
+
+  <use aircraft="Tutorial_1" initialize="scripts/airborne"/>
+  <run start="0" end="15" dt="0.00833333">
+
+    <!-- 
+	  Specify the initial conditions for the test if
+	  different than in the initialize script, and
+	  trim the aircraft.
+	-->
+    <event name="Trim">
+      <condition> sim-time-sec ge 0.0 </condition>
+        <set name="ic/vc-kts"  value="118.0"/>
+        <set name="ic/h-sl-ft" value="7629.0"/>
+        <set name="fcs/flap-cmd-norm" value="0.5"/>
+        <set name="fcs/flap-pos-deg" value="15.0"/>
+        <set name="fcs/flap-cmd-norm" value="0.5"/>
+        <set name="simulation/do_simple_trim" value="1"/>
+        <notify> 
+      	<property> fcs/flap-pos-deg</property>
+      </notify>
+    </event>
+    <event name="Trim2" continuous="true">
+      <condition> sim-time-sec ge 6.0 </condition>
+      	<set name="ic/vc-kts"  value="124.19"/>
+      	<set name="ic/h-sl-ft" value="7605.0"/>
+        <set name="simulation/do_simple_trim" value="1"/>
+        <notify> 
+      	<property> fcs/flap-pos-deg</property>
+      </notify>
+    </event>
+
+    <!-- Move the flap control in 0.25 seconds. The flaps retract in 1.7 seconds -->
+    <event>
+      <condition> sim-time-sec ge 4.0 </condition>
+      <set name="fcs/flap-cmd-norm" value="0.0" action="FG_RAMP" tc="0.25"/>
+      <!--<set name="fcs/flap-pos-deg" value="0.0"/>-->
+      <notify> 
+      	<property> fcs/flap-pos-deg</property>
+      </notify>
+    </event>
+
+  </run>
+
+</runscript>

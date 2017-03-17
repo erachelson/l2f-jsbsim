@@ -1,0 +1,91 @@
+#ifndef PI
+#define PI 3.14159265
+#endif
+
+
+#ifndef THERMALS_HPP_
+#define THERMALS_HPP_
+
+#include <iostream>
+#include <vector>
+#include <math.h>
+//#include <random>
+
+class Thermals
+//All time parameters should be used in same units of time.
+{
+	private:		
+		//Functions defining the different thermal models
+		double Allen(double,double,double);
+		double Childress(double,double);
+		double Lenschow(double, double,int choice=2);
+		void Lawrance(double* w,double x, double y, double z, double t, double Wx=0.0,double Wy=0.0);
+		
+		//Warning!! This function has not been defined yet.
+		//Function to calculate the position of the Lawrance bubble center (x0,y0,z0) at time "t"
+		//Wx,Wy are ambient wind velocity		
+		void bubbleCenter(double &x0, double &y0, double &z0, double t, double Wx=0.0,double Wy=0.0);
+		
+		
+	public:
+
+		double xc0,yc0; //Position of the thermal center at time of birth
+		double xc,yc; /* Position of the centre at any given time */
+		double zi; // Convective mixing layer thickness [m]
+		double w_star;//convective velocity scaling parameter [m/s]
+		double lifeTime;
+		double restTime;
+		double lifeIndex;
+		double tBirth;
+		double xi;
+		bool isAlive,isEffective;
+		/* The above variables are for the following purposes,
+		 * Therma isAlive when lifeIndex<(restTime+lifeTime) and
+		 * isEffective when restTime<lifeIndex<LifeTime
+		 */
+		double driftx, drifty; //The drift velocity of the thermal center
+		
+		//Constructor
+		Thermals();
+		
+		//Overload constructor
+		//@param xc0, yc0:	Position of the the thermal centre at creation
+		//@param zi: Convective Mixing layer thickness[m]
+		//@param w_star: Convective velocity scaling parameter[m/s]
+		//@param tb:		Time at which the Thermal is crested, initialized to tBirth
+		//@param tRest:		The rest time of the Thermal, initialized to restTime
+		//@param tLife:		The life time of the Thermal before it dies, initialized to lifeTime 	
+		Thermals(double xc0, double yc0, double zi, double w_star, double tb, double tRest, double tLife);	
+		
+		//Destructor
+		~Thermals();
+		
+		//the function calculates the distance between the given point(x,y) and the thermal updraft center
+		//at a given altitude z. Effect of ambient winds and thermal drifting are considered.		
+		double distToUpdraftCenter(double x, double y, double z, double Wx=0.0,double Wy=0.0);
+
+		//This function updates the thermal based on its life cycle and drift velocity.
+                //The thermal is considered dead either if it has not been born or if its lifetime is over		
+		void updateThermal(double tSim);
+
+		//This function returns the value of the thermal life cycle coefficient.
+		//The function has no parameters because all the required parameters are taken from the thermal object itself.
+		double timeCoeff();
+		
+		// Ths function calculates the value of the wind due to the thermal at a given location at a given time
+		//@param model: The thermal model to be used
+			// 1.Lenschow with Gaussian distribution
+			// 2.Lenschow with Geodon model
+			// 3.Allen
+			// 4.Childress
+			// 5.Lawrance
+		//@param w: The wind[3] vector that is computed as [Wx,Wy,Wz]
+		//@param position :  The position cordinates [x,y,z] as vector
+		//@param t: Time 
+		void calcThWind(int model,double* w,double* position,double t, double ambWindX=0.0, double ambWindY=0.0, double envSink=0.0);
+
+};
+#endif
+
+
+
