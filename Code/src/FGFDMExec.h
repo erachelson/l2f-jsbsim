@@ -293,31 +293,51 @@ public:
   /** Sets the path to the systems config file directories.
       @param path path to the directory under which systems config
       files are kept, for instance "systems"  */
-  bool SetSystemsPath(string path)   { SystemsPath = path; return true; }
+   bool SetSystemsPath(string path)   { SystemsPath = path; return true; }
 
-  /** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
+    /** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
       This function initializes the windfield object in the Atmosphere model   */  
-  void SetAtmosphereWindfield(string filename);
+   void SetAtmosphereWindfield(string filename);
   
     /** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
         Sets the elevator command    
         @param value elevator command in percent*/ 
-  void SetElevatorCmd(double cmd);
+   void SetElevatorCmd(double cmd);
   
     /** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
         Sets the aileron command
         @param cmd aileron command */ 
-  void SetAileronCmd(double cmd);
+   void SetAileronCmd(double cmd);
   
     /** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
         Sets the rudder command
         @param cmd rudder command in percent*/  
-  void SetRudderCmd(double cmd);
+   void SetRudderCmd(double cmd);
   
     /** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
       Sets the speedbrake command
       @param cmd speedbrake command in percent*/  
-  void SetSpeedbrakesCmd(double cmd);
+   void SetSpeedbrakesCmd(double cmd);
+
+	/** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
+		Sets the spoiler command    
+		@param value spoiler command in percent*/  
+   void SetSpoilerCmd(double cmd);
+
+	/** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
+		Sets the Pitch Trim command    
+		@param value pitch trim command in percent*/  
+   void SetPitchTrimCmd(double cmd);
+
+	/** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
+		Sets the yaw Trim command    
+		@param value yaw trim command in percent*/  
+	void SetYawTrimCmd(double cmd);
+
+	/** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
+		Sets the Roll Trim command    
+		@param value roll trim command in percent*/  
+	void SetRollTrimCmd(double cmd);
     
   /// @name Top-level executive State and Model retrieval mechanism
   //@{

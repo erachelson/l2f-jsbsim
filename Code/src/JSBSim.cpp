@@ -52,7 +52,7 @@ int main(int argc, char **argv)
   }
   
   else{
-	myfile.open ("output.txt");  
+	myfile.open ("../../Output/output.txt");  
 
 	// *** Definition *** //
 	AircraftName ="sgs126";
@@ -74,51 +74,18 @@ int main(int argc, char **argv)
 	
 	if(!WindfieldFile.empty())
 	  FDMExec->SetAtmosphereWindfield(WindfieldFile);
+	
 	FDMExec->DoTrim(0);
-	double obs[3]; 
-	double cmd[] = {0.0,0.0,0.0};
-	double reward, vg,vgdot,udot,vdot,wdot;
-
-	vector <double> rec;
-	bool once=true;
 
 	while (FDMExec->Run()){
-
 		double x,y,z,t;
 		t=FDMExec->GetPropertyValue("sim-time-sec");
 		x=FDMExec->GetPropertyValue("position/distance-from-start-lat-mt");
 		y=FDMExec->GetPropertyValue("position/distance-from-start-lon-mt");
 		z=FDMExec->GetPropertyValue("position/h-sl-meters");
-
-		obs[0] = 0.3048*FDMExec->GetPropertyValue("velocities/v-down-fps"); 
-		obs[1] = FDMExec->GetPropertyValue("velocities/thetadot-rad_sec") - FDMExec->GetPropertyValue("aero/alphadot-rad_sec");
-		obs[2] = FDMExec->GetPropertyValue("attitude/phi-rad");
-
-		vg = 0.3048*FDMExec->GetPropertyValue("velocities/vg-fps");
-		udot = FDMExec->GetPropertyValue("accelerations/udot-ft_sec2"); 
-		vdot = FDMExec->GetPropertyValue("accelerations/vdot-ft_sec2");
-		wdot = FDMExec->GetPropertyValue("accelerations/wdot-ft_sec2");
-		vgdot = 0.3048*sqrt(udot*udot+vdot*vdot+wdot*wdot);
-
-		reward = 0.3048*FDMExec->GetPropertyValue("velocities/h-dot-fps")+vg*vgdot/9.80665;
-
-		rec.push_back(reward);
-
-		bool thermSinceAWhile=0;
-
-		if (t>30.0 && rec.size()>10)
-		{
-			thermSinceAWhile = 1;
-			for(int i=0;i<10;i++)
-			{
-				thermSinceAWhile = thermSinceAWhile*(rec.at(rec.size()-10+i)<0);
-			}
-		}
-		if(thermSinceAWhile && once)
-		{
-			FDMExec->SetAileronCmd(-0.1);
-			//once=false;
-		}
+					
+		if (t>30.0 && FDMExec->GetPropertyValue("attitude/phi-rad")>-0.62)
+			FDMExec->SetAileronCmd(-0.5);
 		else
 			FDMExec->SetAileronCmd(0.0);
 

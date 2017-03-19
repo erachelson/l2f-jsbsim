@@ -573,7 +573,7 @@
             </function>
         </axis>
     </aerodynamics>
-    <output name="Output.csv" rate="60" type="CSV">
+    <output name="../../Output/Output.csv" rate="60" type="CSV">
         <property> position/h-sl-meters </property>
         <property> position/distance-from-start-lat-mt </property>
         <property> position/distance-from-start-lon-mt </property>

@@ -474,6 +474,46 @@ void FGFDMExec::SetRudderCmd(double cmd)
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 /** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
+    Sets the spoiler command    
+    @param value spoiler command in percent*/  
+void FGFDMExec::SetSpoilerCmd(double cmd)
+{ 
+	FCS->SetDspCmd(cmd);
+}
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
+    Sets the Pitch Trim command    
+    @param value pitch trim command in percent*/  
+void FGFDMExec::SetPitchTrimCmd(double cmd)
+{ 
+	FCS->SetPitchTrimCmd(cmd);
+}
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
+    Sets the yaw Trim command    
+    @param value yaw trim command in percent*/  
+void FGFDMExec::SetYawTrimCmd(double cmd)
+{ 
+	FCS->SetYawTrimCmd(cmd);
+}
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
+    Sets the Roll Trim command    
+    @param value roll trim command in percent*/  
+void FGFDMExec::SetRollTrimCmd(double cmd)
+{ 
+	FCS->SetRollTrimCmd(cmd);
+}
+
+//%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/** WARNING!! This Function is not part of the original JSBSim. Was created by Sreekanth.
     Sets the speedbrake command    
     @param value speedbrake command in percent*/  
 void FGFDMExec::SetSpeedbrakesCmd(double cmd)
