@@ -19,7 +19,7 @@ int main(int argc, char **argv)
   // *** INITIALIZATIONS *** //
   
   //Flight simulator objects
-  JSBSim::FGFDMExec *FDMExec;
+  JSBSim::FGFDMExec *L2F;
   JSBSim::FGInitialCondition *IC;
   double ts,tend,dt;
   int option;
@@ -31,22 +31,22 @@ int main(int argc, char **argv)
   option = options(argc, argv);
   
   //Creating New simulation environment
-  FDMExec = new JSBSim::FGFDMExec();
-  FDMExec->SetAircraftPath(RootDir + "aircraft");
-  FDMExec->SetEnginePath(RootDir + "engine");
-  FDMExec->SetSystemsPath(RootDir + "systems");
+  L2F = new JSBSim::FGFDMExec();
+  L2F->SetAircraftPath(RootDir + "aircraft");
+  L2F->SetEnginePath(RootDir + "engine");
+  L2F->SetSystemsPath(RootDir + "systems");
   
 
   if (option ==1){ 
-  	FDMExec->LoadScript(ScriptName);
-  	while (FDMExec->Run());
+  	L2F->LoadScript(ScriptName);
+  	while (L2F->Run());
   	goto quit;
   }
   else if(option ==2){
     
-  	FDMExec->SetAtmosphereWindfield(WindfieldFile);
-  	FDMExec->LoadScript(ScriptName);
-  	while (FDMExec->Run());
+  	L2F->SetAtmosphereWindfield(WindfieldFile);
+  	L2F->LoadScript(ScriptName);
+  	while (L2F->Run());
   
   	goto quit;
   }
@@ -60,34 +60,34 @@ int main(int argc, char **argv)
 	ts=0.0;
 	tend=100.0;
 	dt=0.083;
-	FDMExec->SetSimtime(ts,tend,dt);
-	FDMExec->LoadModel( RootDir + "aircraft",
+	L2F->SetSimtime(ts,tend,dt);
+	L2F->LoadModel( RootDir + "aircraft",
 							   RootDir + "engine",
 							   RootDir + "systems",
 							   AircraftName);
-	IC = FDMExec->GetIC();
+	IC = L2F->GetIC();
 	if ( ! IC->Load(InitfileName)) {
-	  delete &FDMExec;
+	  delete &L2F;
 	  cerr << "Initialization unsuccessful" << endl;
 	  exit(-1);
 	}
 	
 	if(!WindfieldFile.empty())
-	  FDMExec->SetAtmosphereWindfield(WindfieldFile);
+	  L2F->SetAtmosphereWindfield(WindfieldFile);
 	
-	FDMExec->DoTrim(0);
+	L2F->DoTrim(0);
 
-	while (FDMExec->Run()){
+	while (L2F->Run()){
 		double x,y,z,t;
-		t=FDMExec->GetPropertyValue("sim-time-sec");
-		x=FDMExec->GetPropertyValue("position/distance-from-start-lat-mt");
-		y=FDMExec->GetPropertyValue("position/distance-from-start-lon-mt");
-		z=FDMExec->GetPropertyValue("position/h-sl-meters");
+		t=L2F->GetPropertyValue("sim-time-sec");
+		x=L2F->GetPropertyValue("position/distance-from-start-lat-mt");
+		y=L2F->GetPropertyValue("position/distance-from-start-lon-mt");
+		z=L2F->GetPropertyValue("position/h-sl-meters");
 					
-		if (t>30.0 && FDMExec->GetPropertyValue("attitude/phi-rad")>-0.62)
-			FDMExec->SetAileronCmd(-0.5);
+		if (t>30.0 && L2F->GetPropertyValue("attitude/phi-rad")>-0.62)
+			L2F->SetAileronCmd(-0.5);
 		else
-			FDMExec->SetAileronCmd(0.0);
+			L2F->SetAileronCmd(0.0);
 
 		myfile<<t<<"\t"<<x<<"\t"<<y<<"\t"<<z<<endl;
 		}
@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 
 quit:
   cout<<"The simulation has ended"<<endl;
-  delete FDMExec;
+  delete L2F;
   return 0;
 }
 
